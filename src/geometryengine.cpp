@@ -50,9 +50,6 @@
 
 #include "geometryengine.h"
 
-#include <QVector2D>
-#include <QVector3D>
-
 struct VertexData
 {
     QVector3D position;
@@ -110,11 +107,9 @@ GeometryEngine::~GeometryEngine()
     arrayBuf.destroy();
     indexBuf.destroy();
 }
-//! [0]
 
 void GeometryEngine::initGeometry()
 {
-////! [1]
     // Transfer vertex data to VBO 0
     arrayBuf.bind();
     arrayBuf.allocate(vertices, nbrVertices * sizeof(VertexData));
@@ -122,10 +117,8 @@ void GeometryEngine::initGeometry()
     // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(indices, nbrIndices * sizeof(GLushort));
-//! [1]
 }
 
-//! [2]
 void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
 {
     // Tell OpenGL which VBOs to use
@@ -151,7 +144,4 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
-
-    //
 }
-//! [2]

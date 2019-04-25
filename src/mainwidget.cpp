@@ -58,11 +58,9 @@ MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent),
     geometries(0),
     angularSpeed(0)
-{
-}
+{}
 
-MainWidget::~MainWidget()
-{
+MainWidget::~MainWidget() {
     // Make sure the context is current when deleting the texture
     // and the buffers.
     makeCurrent();
@@ -70,14 +68,12 @@ MainWidget::~MainWidget()
     doneCurrent();
 }
 
-void MainWidget::mousePressEvent(QMouseEvent *e)
-{
+void MainWidget::mousePressEvent(QMouseEvent *e) {
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
 }
 
-void MainWidget::mouseReleaseEvent(QMouseEvent *e)
-{
+void MainWidget::mouseReleaseEvent(QMouseEvent *e) {
     // Mouse release position - mouse press position
     QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
 
@@ -111,7 +107,6 @@ void MainWidget::timerEvent(QTimerEvent *)
         update();
     }
 }
-//! [1]
 
 void MainWidget::initializeGL()
 {
@@ -121,13 +116,11 @@ void MainWidget::initializeGL()
 
     initShaders();
 
-//! [2]
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
 
     // Enable back face culling
     glEnable(GL_CULL_FACE);
-//! [2]
 
     geometries = new GeometryEngine;
 
@@ -135,9 +128,7 @@ void MainWidget::initializeGL()
     timer.start(12, this);
 }
 
-//! [3]
-void MainWidget::initShaders()
-{
+void MainWidget::initShaders() {
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
         close();
@@ -154,12 +145,8 @@ void MainWidget::initShaders()
     if (!program.bind())
         close();
 }
-//! [3]
 
-
-//! [5]
-void MainWidget::resizeGL(int w, int h)
-{
+void MainWidget::resizeGL(int w, int h) {
     // Calculate aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
@@ -172,10 +159,8 @@ void MainWidget::resizeGL(int w, int h)
     // Set perspective projection
     projection.perspective(fov, aspect, zNear, zFar);
 }
-//! [5]
 
-void MainWidget::paintGL()
-{
+void MainWidget::paintGL() {
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     drawMan();

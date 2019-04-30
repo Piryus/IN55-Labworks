@@ -25,7 +25,9 @@ QVector3D Quaternion::operator*(const QVector3D& v) {
 }
 
 Quaternion Quaternion::operator*(float f) {
-    return Quaternion(this->w * f, this->x *f, this->y * f, this->z * f);
+    Quaternion result(this->w * f, this->x *f, this->y * f, this->z * f);
+    result.normalize();
+    return result;
 }
 
 Quaternion Quaternion::operator+(const Quaternion& q) {
@@ -75,3 +77,15 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t
     return newQ1 * (((sinf(theta)*(1-t))/sinf(theta))) + newQ2 * ((sinf(theta)*t)/sinf(theta));
 }
 
+float Quaternion::norm() {
+    return sqrt(w*w + x*x + y*y + z*z);
+}
+
+void Quaternion::normalize() {
+    if (norm() != 0) {
+        w /= norm();
+        x /= norm();
+        y /= norm();
+        z /= norm();
+    }
+}

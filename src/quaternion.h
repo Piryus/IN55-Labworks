@@ -21,6 +21,7 @@ public:
     void setFromAxis(float angle, float ax, float ay, float az);
     Quaternion conjugate();
     Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float t);
+    float norm();
     void normalize();
     void setRotationMatrix(float mat);
 };

@@ -60,7 +60,7 @@ void Quaternion::setFromAxis(float angle, float ax, float ay, float az) {
 }
 
 Quaternion Quaternion::conjugate() {
-    set(this->w,
+    return Quaternion(this->w,
         -this->x,
         -this->y,
         -this->z);

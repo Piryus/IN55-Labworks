@@ -68,6 +68,10 @@ MainWidget::~MainWidget() {
     doneCurrent();
 }
 
+void MainWidget::setLab(int lab) {
+    this->lab = lab;
+}
+
 void MainWidget::mousePressEvent(QMouseEvent *e) {
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
@@ -122,6 +126,10 @@ void MainWidget::initializeGL()
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 
+    // Enable point size manipulation
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+    glEnable(GL_POINT_SMOOTH);
+
     geometries = new GeometryEngine;
 
     // Use QBasicTimer because its faster than QTimer
@@ -129,12 +137,22 @@ void MainWidget::initializeGL()
 }
 
 void MainWidget::initShaders() {
+    QString vshader;
+    QString fshader;
+    if (lab==3) {
+         vshader = ":/vshaderLab3.glsl";
+         fshader = ":/fshaderLab3.glsl";
+    } else {
+        vshader = ":/vshader.glsl";
+        fshader = ":/fshader.glsl";
+    }
+
     // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, vshader))
         close();
 
     // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, fshader))
         close();
 
     // Link shader pipeline
@@ -163,8 +181,11 @@ void MainWidget::resizeGL(int w, int h) {
 void MainWidget::paintGL() {
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    drawMan();
-
+    if (lab == 3) {
+        drawCube();
+    } else {
+      drawMan();
+    }
 }
 
 void MainWidget::drawMan() {
@@ -234,6 +255,18 @@ void MainWidget::drawMan() {
     matrixLeg2.scale(1,5,1);
     // Set modelview-projection matrix
     program.setUniformValue("mvp", projection * t * matrixLeg2);
+    // Draw cube geometry
+    geometries->drawGeometry(&program);
+}
+
+void MainWidget::drawCube() {
+    // Calculate model view transformation
+    QMatrix4x4 matrix;
+    matrix.translate(0.0, 0, -10);
+    matrix.rotate(rotation);
+    matrix.scale(3,3,3);
+    // Set modelview-projection matrix
+    program.setUniformValue("mvp", projection * matrix);
     // Draw cube geometry
     geometries->drawGeometry(&program);
 }

@@ -7,7 +7,6 @@ in vec3 color;
 
 out vec3 fColor;
 
-//! [0]
 void main()
 {
     // Calculate vertex position in screen space
@@ -15,4 +14,3 @@ void main()
 
     fColor = color;
 }
-//! [0]

@@ -71,6 +71,7 @@ class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions
 public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget() override;
+    void setLab(int lab);
 
 protected:
     void mousePressEvent(QMouseEvent *e) override;
@@ -85,6 +86,7 @@ protected:
     void initTextures();
 
     void drawMan();
+    void drawCube();
 
 private:
     QBasicTimer timer;
@@ -97,6 +99,8 @@ private:
     QVector3D rotationAxis;
     qreal angularSpeed;
     QQuaternion rotation;
+
+    int lab;
 };
 
 #endif // MAINWIDGET_H

@@ -19,7 +19,9 @@ Quaternion Quaternion::operator*(const Quaternion& q) {
 }
 
 QVector3D Quaternion::operator*(const QVector3D& v) {
-    // TODO
+    Quaternion quaternionV(0, v.x(), v.y(), v.z());
+    Quaternion quaternionResult = (*this) * quaternionV * (*this).conjugate();
+    return QVector3D(quaternionResult.x, quaternionResult.y, quaternionResult.z);
 }
 
 Quaternion Quaternion::operator*(float f) {

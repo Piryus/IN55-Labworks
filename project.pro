@@ -17,3 +17,6 @@ HEADERS += \
 
 RESOURCES += \
     ressources/shaders.qrc \
+    ressources/texture.png \
+
+DISTFILES +=

@@ -56,6 +56,7 @@
 #include <QOpenGLBuffer>
 #include <QVector2D>
 #include <QVector3D>
+#include <QPixmap>
 
 class GeometryEngine : protected QOpenGLFunctions
 {

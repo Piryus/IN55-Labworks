@@ -100,6 +100,7 @@ private:
     qreal angularSpeed;
     QQuaternion rotation;
 
+    unsigned int texId;
     int lab;
 };
 

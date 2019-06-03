@@ -58,7 +58,7 @@
 
 int main(int argc, char *argv[])
 {
-    int lab = 3;
+    int lab = 4;
     QApplication app(argc, argv);
     app.setAttribute( Qt::AA_UseDesktopOpenGL );
 

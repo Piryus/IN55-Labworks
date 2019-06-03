@@ -54,19 +54,20 @@ struct VertexData
 {
     QVector3D position;
     QVector3D color;
+    QVector2D uv;
 };
 
 // Vertices of a cube 1X1
 const int nbrVertices = 8;
 VertexData vertices[] = {
-    {QVector3D(-0.5f, -0.5f, -0.5f), QVector3D(1.0f, 0.0f,0.0f)},
-    {QVector3D(0.5f, -0.5f, -0.5f), QVector3D(0.0f, 1.0f,0.0f)},
-    {QVector3D(-0.5f, 0.5f, -0.5f), QVector3D(0.0f, 0.0f,1.0f)},
-    {QVector3D(-0.5f, -0.5f, 0.5f), QVector3D(1.0f, 1.0f,0.0f)},
-    {QVector3D(0.5f, 0.5f, -0.5f), QVector3D(0.0f, 1.0f,1.0f)},
-    {QVector3D(-0.5f, 0.5f, 0.5f), QVector3D(1.0f, 0.0f,1.0f)},
-    {QVector3D(0.5f, -0.5f, 0.5f), QVector3D(1.0f, 1.0f,1.0f)},
-    {QVector3D(0.5f, 0.5f, 0.5f), QVector3D(1.0f, 1.0f,1.0f)},
+    {QVector3D(-0.5f, -0.5f, -0.5f), QVector3D(1.0f, 0.0f, 0.0f), QVector2D(0.0f, 0.0f)},
+    {QVector3D(0.5f, -0.5f, -0.5f), QVector3D(0.0f, 1.0f, 0.0f), QVector2D(1.0f, 0.0f)},
+    {QVector3D(-0.5f, 0.5f, -0.5f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(0.0f, 1.0f)},
+    {QVector3D(-0.5f, -0.5f, 0.5f), QVector3D(1.0f, 1.0f, 0.0f), QVector2D(1.0f, 1.0f)},
+    {QVector3D(0.5f, 0.5f, -0.5f), QVector3D(0.0f, 1.0f, 1.0f), QVector2D(0.0f, 0.0f)},
+    {QVector3D(-0.5f, 0.5f, 0.5f), QVector3D(1.0f, 0.0f, 1.0f), QVector2D(1.0f, 0.0f)},
+    {QVector3D(0.5f, -0.5f, 0.5f), QVector3D(1.0f, 1.0f, 1.0f), QVector2D(0.0f, 1.0f)},
+    {QVector3D(0.5f, 0.5f, 0.5f), QVector3D(1.0f, 1.0f, 1.0f), QVector2D(1.0f, 1.0f)},
 };
 
 
@@ -141,6 +142,14 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
     int colorLocation = program->attributeLocation("color");
     program->enableAttributeArray(colorLocation);
     program->setAttributeBuffer(colorLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
+
+    // Offset for uv coordinates
+    offset += sizeof(QVector3D);
+
+    // Tell OpenGL programmable pipeline how to locate vertex uv coordinate
+    int uvLocation = program->attributeLocation("uv");
+    program->enableAttributeArray(uvLocation);
+    program->setAttributeBuffer(uvLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(/*GL_POINTS*/GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);

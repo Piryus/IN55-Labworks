@@ -2,7 +2,9 @@
     <qresource prefix="/">
         <file>vshaderLab3.glsl</file>
         <file>fshaderLab3.glsl</file>
-		<file>vshader.glsl</file>
+        <file>vshader.glsl</file>
         <file>fshader.glsl</file>
+        <file>fshaderLab4.glsl</file>
+        <file>vshaderLab4.glsl</file>
     </qresource>
 </RCC>

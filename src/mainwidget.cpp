@@ -139,13 +139,27 @@ void MainWidget::initializeGL()
 void MainWidget::initShaders() {
     QString vshader;
     QString fshader;
-    if (lab==3) {
+    if (lab == 3) {
          vshader = ":/vshaderLab3.glsl";
          fshader = ":/fshaderLab3.glsl";
+    } else if (lab == 4) {
+        vshader = ":/vshaderLab4.glsl";
+        fshader = ":/fshaderLab4.glsl";
     } else {
         vshader = ":/vshader.glsl";
         fshader = ":/fshader.glsl";
     }
+
+    glGenTextures(1, &(this->texId));
+    QPixmap pixmap("C:/Users/legen/Desktop/IN55-Labworks/ressources/texture.png");
+    uchar* tab_texture = pixmap.toImage().bits();
+
+    // Initialisation de la première texture stockée dans l'unité de texture #0
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->texId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, tab_texture);
 
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, vshader))
@@ -181,10 +195,10 @@ void MainWidget::resizeGL(int w, int h) {
 void MainWidget::paintGL() {
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (lab == 3) {
+    if (lab == 3 || lab == 4) {
         drawCube();
     } else {
-      drawMan();
+        drawMan();
     }
 }
 
@@ -267,6 +281,11 @@ void MainWidget::drawCube() {
     matrix.scale(3,3,3);
     // Set modelview-projection matrix
     program.setUniformValue("mvp", projection * matrix);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->texId);
+    program.setUniformValue("texId", 0);
+
     // Draw cube geometry
     geometries->drawGeometry(&program);
 }
